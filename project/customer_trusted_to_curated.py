@@ -37,7 +37,7 @@ JoinCustomer_node1790247492790 = Join.apply(frame1=AccelerometerLanding_node1790
 
 # Script generated for node Drop Fields and Duplicates 
 SqlQuery0 = '''
-select 
+select distinct
     customername, email, phone, birthday,
     serialnumber, registrationdate, lastupdatedate, sharewithresearchasofdate, 
     sharewithpublicasofdate, sharewithfriendsasofdate
