@@ -26,24 +26,24 @@ DEFAULT_DATA_QUALITY_RULESET = """
     ]
 """
 
-# Script generated for node Accelerometer Landing
-AccelerometerLanding_node1790246932363 = glueContext.create_dynamic_frame.from_catalog(database="stedi", table_name="accelerometer_landing", transformation_ctx="AccelerometerLanding_node1790246932363")
+# Script generated for node Accelerometer Trusted
+AccelerometerTrusted_node1790246932363 = glueContext.create_dynamic_frame.from_catalog(database="stedi", table_name="accelerometer_trusted", transformation_ctx="AccelerometerTrusted_node1790246932363")
 
 # Script generated for node Customer Trusted
 CustomerTrusted_node1790246955069 = glueContext.create_dynamic_frame.from_catalog(database="stedi", table_name="customer_trusted", transformation_ctx="CustomerTrusted_node1790246955069")
 
 # Script generated for node Join Customer
-JoinCustomer_node1790247492790 = Join.apply(frame1=AccelerometerLanding_node1790246932363, frame2=CustomerTrusted_node1790246955069, keys1=["user"], keys2=["email"], transformation_ctx="JoinCustomer_node1790247492790")
+JoinCustomer_node1790247492790 = Join.apply(frame1=AccelerometerTrusted_node1790246932363, frame2=CustomerTrusted_node1790246955069, keys1=["user"], keys2=["email"], transformation_ctx="JoinCustomer_node1790247492790")
 
 # Script generated for node Drop Fields and Duplicates 
-SqlQuery0 = '''
+SqlQuery327 = '''
 select distinct
     customername, email, phone, birthday,
     serialnumber, registrationdate, lastupdatedate, sharewithresearchasofdate, 
     sharewithpublicasofdate, sharewithfriendsasofdate
 from myDataSource
 '''
-DropFieldsandDuplicates_node1790247860028 = sparkSqlQuery(glueContext, query = SqlQuery0, mapping = {"myDataSource":JoinCustomer_node1790247492790}, transformation_ctx = "DropFieldsandDuplicates_node1790247860028")
+DropFieldsandDuplicates_node1790247860028 = sparkSqlQuery(glueContext, query = SqlQuery327, mapping = {"myDataSource":JoinCustomer_node1790247492790}, transformation_ctx = "DropFieldsandDuplicates_node1790247860028")
 
 # Script generated for node Customer Curated 
 EvaluateDataQuality().process_rows(frame=DropFieldsandDuplicates_node1790247860028, ruleset=DEFAULT_DATA_QUALITY_RULESET, publishing_options={"dataQualityEvaluationContext": "EvaluateDataQuality_node1790246831355", "enableDataQualityResultsPublishing": True}, additional_options={"dataQualityResultsPublishing.strategy": "BEST_EFFORT", "observations.scope": "ALL"})
